@@ -1,6 +1,6 @@
 'use strict';
-DIRECT['custom-text']='custom-text.html';
-DIRECT['whiteboard']='whiteboard.html';
+DIRECT['custom-text']='custom-text.html?edition=ms';
+DIRECT['whiteboard']='whiteboard.html?edition=ms';
 const EXTRA_TOOLS=[
  {slug:'custom-text',icon:'📝',title:'Teks / Arahan Tersuai',mode:'half'},
  {slug:'whiteboard',icon:'✏️',title:'Papan Putih',mode:'full'}
