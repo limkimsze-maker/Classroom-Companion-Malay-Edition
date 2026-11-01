@@ -1,11 +1,11 @@
 'use strict';
-/* English Adventure Island: eight primary-friendly activities, one shared self-contained teaching engine. */
+/* Pulau Bahasa Ceria: age-appropriate original Malay question sets, bilingual teacher editing. */
 (function(){
 const $=id=>document.getElementById(id);
 const TYPE=document.body.dataset.activity;
 const FEATURES=window.PULAU_BAHASA_CERIA_DATA;
 const config=FEATURES[TYPE];
-if(!config){document.body.textContent='Unknown activity.';return}
+if(!config){document.body.textContent='Aktiviti tidak dijumpai.';return}
 const DATA_KEY='pulau-bahasa-ceria-v1:'+TYPE;
 const deep=x=>JSON.parse(JSON.stringify(x));
 const sceneNames={classroom:'Bilik darjah',rain:'Hari hujan',park:'Taman yang bersih',library:'Perpustakaan',playground:'Taman permainan',custom:'Gambar sendiri / Uploaded picture'};
@@ -281,9 +281,9 @@ function buildExpanded(q){
 }
 function renderBuilder(){
  const q=items[index],phases=[
- {title:'BILAKAH berlaku?',answer:q.time,options:[q.time,...q.wrongTime]},
- {title:'DI MANAKAH berlaku?',answer:q.place,options:[q.place,...q.wrongPlace]},
- {title:'BAGAIMANAKAH berlaku?',answer:q.manner,options:[q.manner,...q.wrongManner]}
+ {title:'BILA? (Masa)',answer:q.time,options:[q.time,...q.wrongTime]},
+ {title:'DI MANA? (Tempat)',answer:q.place,options:[q.place,...q.wrongPlace]},
+ {title:'BAGAIMANA? (Cara)',answer:q.manner,options:[q.manner,...q.wrongManner]}
  ];
  let phase=0,missed=false;
  heading('✨ '+config.prompt);
