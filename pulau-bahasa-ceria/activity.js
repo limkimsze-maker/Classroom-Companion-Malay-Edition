@@ -407,38 +407,38 @@ function stopMic(){
 }
 function fieldsFor(){
  const common=[
-  {key:'text',label:'Correct sentence',wide:true,hint:'Write a complete sentence with at least four words.'}
+  {key:'text',label:'Ayat betul / Correct sentence',wide:true,hint:'Enter a complete Malay sentence with at least four words.'}
  ];
  if(config.type==='scramble')return common;
  if(config.type==='cloze')return[
-  {key:'sentence',label:'Sentence with one ___ blank',wide:true,hint:'Example: The ___ child carried the bag.'},
-  {key:'answer',label:'Correct missing word'},
-  {key:'distractors',label:'Incorrect choices (one per line)',multi:true,wide:true}
+  {key:'sentence',label:'Ayat dengan satu ___ / Sentence with one blank',wide:true,hint:'Example: Adik minum ___ selepas bermain.'},
+  {key:'answer',label:'Jawapan betul / Correct missing word'},
+  {key:'distractors',label:'Pilihan salah / Incorrect options (one per line)',multi:true,wide:true}
  ];
- if(config.type==='punctuation')return[{key:'sentence',label:'Sentence with one ___ blank',wide:true,hint:'Example: Where is my pencil___'},
-  {key:'mark',label:'Correct punctuation mark',select:['.','?','!',',']}];
- if(config.type==='sequence')return[{key:'title',label:'Story title',wide:true},
-  {key:'lines',label:'Story events in the RIGHT order (one per line)',multi:true,wide:true,hint:'Write 3 to 9 sentences. Students will rearrange them.'}];
- if(config.type==='pairs')return[{key:'title',label:'Topic / title',wide:true},
-  {key:'pairs',label:'Correct pairs (one per line)',multi:true,wide:true,hint:'Write: word | matching phrase. Example: heavy | rain'}];
- if(config.type==='doctor')return[{key:'wrong',label:'Sentence with a mistake',wide:true},{key:'correct',label:'Corrected sentence',wide:true},
-  {key:'distractors',label:'Two incorrect alternatives (one per line)',multi:true,wide:true}];
+ if(config.type==='punctuation')return[{key:'sentence',label:'Ayat dengan satu ___ / Sentence with one blank',wide:true,hint:'Example: Siapakah nama kamu___'},
+  {key:'mark',label:'Tanda baca betul / Correct punctuation',select:['.','?','!',',']}];
+ if(config.type==='sequence')return[{key:'title',label:'Tajuk cerita / Story title',wide:true},
+  {key:'lines',label:'Peristiwa mengikut urutan / Events in CORRECT order (one per line)',multi:true,wide:true,hint:'Write 3–9 Malay sentences in the correct order. Pupils will rearrange them.'}];
+ if(config.type==='pairs')return[{key:'title',label:'Tajuk / Topic',wide:true},
+  {key:'pairs',label:'Padanan betul / Matching pairs (one per line)',multi:true,wide:true,hint:'Write: word | matching phrase. Example: membaca | buku'}];
+ if(config.type==='doctor')return[{key:'wrong',label:'Ayat salah / Sentence with a mistake',wide:true},{key:'correct',label:'Ayat betul / Corrected sentence',wide:true},
+  {key:'distractors',label:'Dua pilihan salah / Two incorrect options (one per line)',multi:true,wide:true}];
  if(config.type==='builder')return[
-  {key:'base',label:'Short base sentence',wide:true},
-  {key:'time',label:'Correct WHEN phrase'},{key:'wrongTime',label:'Two incorrect WHEN choices',multi:true},
-  {key:'place',label:'Correct WHERE phrase'},{key:'wrongPlace',label:'Two incorrect WHERE choices',multi:true},
-  {key:'manner',label:'Correct HOW phrase'},{key:'wrongManner',label:'Two incorrect HOW choices',multi:true}
+  {key:'base',label:'Ayat asas / Short base sentence',wide:true},
+  {key:'time',label:'Masa / Correct WHEN phrase'},{key:'wrongTime',label:'Two incorrect WHEN choices / Dua pilihan salah',multi:true},
+  {key:'place',label:'Tempat / Correct WHERE phrase'},{key:'wrongPlace',label:'Two incorrect WHERE choices / Dua pilihan salah',multi:true},
+  {key:'manner',label:'Cara / Correct HOW phrase'},{key:'wrongManner',label:'Two incorrect HOW choices / Dua pilihan salah',multi:true}
  ];
- return [{key:'title',label:'Scene title',wide:true},{key:'scene',label:'Picture',select:Object.keys(sceneNames)},
-  {key:'questions',label:'Guiding questions (one per line)',multi:true,wide:true},
-  {key:'keywords',label:'Optional hint words (one per line)',multi:true,wide:true},
-  {key:'model',label:'Teacher model response',multi:true,wide:true}];
+ return [{key:'title',label:'Tajuk gambar / Scene title',wide:true},{key:'scene',label:'Gambar / Picture',select:Object.keys(sceneNames)},
+  {key:'questions',label:'Soalan panduan / Guiding questions (one per line)',multi:true,wide:true},
+  {key:'keywords',label:'Kata bantuan / Optional hint words (one per line)',multi:true,wide:true},
+  {key:'model',label:'Contoh jawapan guru / Model response',multi:true,wide:true}];
 }
 const fieldSchema=fieldsFor();
 let editorRowCounter=0;
 function editorRow(data,number){
  const card=e('article','editor-card');card.dataset.row=String(++editorRowCounter);
- const top=e('div','editor-top'),title=e('strong',null,'Challenge '+number),moves=e('div','editor-move');
+ const top=e('div','editor-top'),title=e('strong',null,'Soalan '+number),moves=e('div','editor-move');
  const deleteBtn=makeButton('Remove','mini-btn danger',()=>{if($('editorList').children.length===1){setNotice('Keep at least one question.',true);return}card.remove();renumberEditors()});
  const up=makeButton('↑ Up','mini-btn',()=>{if(card.previousElementSibling){card.parentElement.insertBefore(card,card.previousElementSibling);renumberEditors()}});
  const down=makeButton('↓ Down','mini-btn',()=>{if(card.nextElementSibling){card.parentElement.insertBefore(card.nextElementSibling,card);renumberEditors()}});
@@ -503,7 +503,7 @@ function resizePicture(file){
   img.src=obj;
  });
 }
-function renumberEditors(){[...$('editorList').children].forEach((card,i)=>{const title=card.querySelector('.editor-top strong');if(title)title.textContent='Challenge '+(i+1)})}
+function renumberEditors(){[...$('editorList').children].forEach((card,i)=>{const title=card.querySelector('.editor-top strong');if(title)title.textContent='Soalan '+(i+1)})}
 function renderEditors(){
  const root=$('editorList');root.replaceChildren();
  items.forEach((item,i)=>root.append(editorRow(item,i+1)));
@@ -533,8 +533,8 @@ function exportJSON(){
   const next=validateAll(readEditors()),payload={app:'PulauBahasaCeria',version:1,type:TYPE,items:next};
   const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json;charset=utf-8'});
   const url=URL.createObjectURL(blob),a=document.createElement('a');
-  a.href=url;a.download='English-'+TYPE+'-lesson.json';document.body.append(a);a.click();a.remove();
-  setTimeout(()=>URL.revokeObjectURL(url),1200);setNotice('✓ Lesson exported with its questions and answers.',false);
+  a.href=url;a.download='BahasaMelayu-'+TYPE+'-lesson.json';document.body.append(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1200);setNotice('✓ Malay lesson exported with its questions and answers.',false);
  }catch(err){setNotice(err.message||'Cannot export lesson.',true)}
 }
 async function importJSON(file){
@@ -542,7 +542,7 @@ async function importJSON(file){
  if(file.size>18*1024*1024){setNotice('The file is too large (maximum 18 MB).',true);return}
  try{
   const obj=JSON.parse(await file.text());
-  if(!obj||obj.app!=='PulauBahasaCeria'||obj.version!==1||obj.type!==TYPE)throw Error('This JSON file belongs to another activity or has an invalid format.');
+  if(!obj||obj.app!=='PulauBahasaCeria'||obj.version!==1||obj.type!==TYPE)throw Error('Wrong activity or invalid JSON format. Choose a Malay lesson for this activity.');
   const incoming=validateAll(obj.items);
   const root=$('editorList');root.replaceChildren();
   incoming.forEach((q,i)=>root.append(editorRow(q,i+1)));
@@ -554,15 +554,15 @@ $('gearButton').onclick=()=>setMode(editing?'student':'teacher');
 $('savePlay').onclick=saveAndPlay;
 $('cancelTeacher').onclick=()=>setMode('student');
 $('addQuestion').onclick=()=>{
- if($('editorList').children.length>=25){setNotice('Maximum 25 questions per lesson.',true);return}
+ if($('editorList').children.length>=25){setNotice('Maximum 25 questions per lesson (maksimum 25 soalan).',true);return}
  $('editorList').append(editorRow(deep(config.samples[0]),$('editorList').children.length+1));
- setNotice('A new question has been added. Edit its details before saving.');
+ setNotice('A new question was added. Please edit it before saving.');
 };
 $('restoreExamples').onclick=()=>{
  if(!window.confirm('Replace all questions shown here with the five built-in examples?'))return;
  const root=$('editorList');root.replaceChildren();
  config.samples.forEach((q,i)=>root.append(editorRow(deep(q),i+1)));
- setNotice('Five examples loaded into the editor. Save to apply them.');
+ setNotice('Five original Malay examples loaded. Save to apply them.');
 };
 $('exportLesson').onclick=exportJSON;
 $('importLesson').onclick=()=>$('jsonFile').click();
