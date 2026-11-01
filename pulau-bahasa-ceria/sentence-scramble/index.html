@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ms-SG">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#fffaf3">
+<meta name="description" content="Susun Ayat. A free primary-school Malay learning activity with five original examples and bilingual teacher settings.">
+<title>Susun Ayat | Pulau Bahasa Ceria</title>
+<link rel="stylesheet" href="../activity.css">
+<script src="../data-ms.js" defer></script>
+<script src="../activity.js" defer></script>
+</head>
+<body data-activity="sentence-scramble">
+<header class="topbar">
+ <div class="topbar-inner">
+  <a href="../" class="island-home" aria-label="Kembali ke Pulau Bahasa Ceria">🏝️ Pulau</a>
+  <div class="logo"><span class="logo-mark" id="toolEmoji" aria-hidden="true">🧩</span>
+   <span><strong id="toolTitle">Susun Ayat</strong><small>Pulau Bahasa Ceria</small></span></div>
+  <button type="button" id="gearButton" class="gear" aria-pressed="false" aria-label="Teacher settings / Tetapan guru" title="Teacher settings / Tetapan guru"><span aria-hidden="true">⚙️</span><span class="gear-label">Tetapan Guru</span></button>
+ </div>
+</header>
+<main class="wrap">
+ <section id="studentArea" aria-labelledby="studentTitle">
+  <div class="student-hero">
+   <span class="badge">⭐ Sedia untuk belajar?</span>
+   <h1 id="studentTitle">Susun Ayat</h1>
+   <p id="studentSubtitle">Mari kita mula!</p>
+  </div>
+  <div id="questionStage" class="stage">
+   <div class="stage-header"><span class="progress" id="questionProgress">Soalan 1</span><span class="score-chip" id="scoreProgress">⭐ 0 betul</span></div>
+   <div id="stageContent"></div><p id="feedback" class="feedback" role="status" aria-live="polite"></p>
+   <div class="stage-actions" id="stageActions"></div>
+  </div>
+  <div id="resultsArea" class="stage" hidden></div>
+ </section>
+ <section id="teacherArea" class="teacher-panel" aria-labelledby="teacherTitle" hidden>
+  <span class="badge">⚙️ Teacher workspace / Ruang guru</span>
+  <h2 id="teacherTitle">Tetapan Guru · Teacher Settings</h2>
+  <p class="teacher-intro"><strong>For teachers:</strong> Edit the five original Malay example questions, add your own, or import a lesson. Pupils see the activity directly; these settings stay hidden until you select ⚙️. Select <strong>Save &amp; Play</strong> to return to Question 1.<br>
+  <strong>Penting:</strong> Questions are saved on this device and browser only. Use <strong>Export JSON</strong> to back up or share your lesson with colleagues. No textbook content is reproduced.</p>
+  <div class="teacher-toolbar">
+   <button type="button" id="addQuestion" class="btn secondary">＋ Tambah Soalan / Add</button>
+   <button type="button" id="restoreExamples" class="btn secondary">📚 5 Contoh Asal / Examples</button>
+   <button type="button" id="exportLesson" class="btn secondary">⬇ Eksport / Export JSON</button>
+   <button type="button" id="importLesson" class="btn secondary">⬆ Import JSON</button>
+   <input id="jsonFile" class="file-hidden" type="file" accept=".json,application/json" aria-label="Choose lesson JSON file">
+  </div>
+  <p id="notice" class="teacher-status" role="status" aria-live="polite"></p>
+  <div id="editorList"></div>
+  <div class="teacher-foot">
+   <button type="button" id="savePlay" class="btn primary">✓ Simpan &amp; Mula / Save &amp; Play</button>
+   <button type="button" id="cancelTeacher" class="btn secondary">↩ Kembali / Cancel</button>
+  </div>
+ </section>
+</main>
+<footer class="page-footer">Pulau Bahasa Ceria · Dibangunkan oleh Lim Kim Sze · Contoh ayat asal, bukan petikan buku teks</footer>
+</body>
+</html>
