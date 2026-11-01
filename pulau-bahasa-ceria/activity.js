@@ -114,8 +114,8 @@ function renderStudent(){
  $('toolEmoji').textContent=config.emoji;
  $('studentTitle').textContent=config.title;
  $('studentSubtitle').textContent=config.subtitle;
- $('questionProgress').textContent='Challenge '+(index+1)+' of '+items.length;
- $('scoreProgress').textContent=config.type==='picture'?'Your speaking adventure':'⭐ '+score+' correct';
+ $('questionProgress').textContent='Soalan '+(index+1)+' daripada '+items.length;
+ $('scoreProgress').textContent=config.type==='picture'?'Latihan bertutur':'⭐ '+score+' betul';
  $('stageContent').replaceChildren();
  $('feedback').className='feedback';$('feedback').textContent='';
  $('stageActions').replaceChildren();
@@ -133,21 +133,21 @@ function renderStudent(){
 function heading(text){studentRoot().append(e('p','instruction',text))}
 function textPanel(text,cls){studentRoot().append(e('div',cls||'question-text',text))}
 function actions(list){$('stageActions').replaceChildren(...list)}
-function addNext(){actions([makeButton(index+1<items.length?'Next challenge →':'See my results →','btn primary',nextQuestion)])}
+function addNext(){actions([makeButton(index+1<items.length?'Soalan seterusnya →':'Lihat keputusan →','btn primary',nextQuestion)])}
 function nextQuestion(){stopMic();completed++;if(index+1<items.length){index++;renderStudent()}else showResults()}
-function completeCorrect(){score++;$('scoreProgress').textContent='⭐ '+score+' correct';feedback('Brilliant! You got it! ⭐','good');addNext()}
-function markWrong(){feedback('Not quite. Have another go! You can do it.','bad')}
+function completeCorrect(){score++;$('scoreProgress').textContent='⭐ '+score+' betul';feedback('Bagus! Jawapan kamu betul! ⭐','good');addNext()}
+function markWrong(){feedback('Belum tepat. Cuba lagi! Kamu pasti boleh.','bad')}
 function showResults(){
  $('questionStage').hidden=true;$('resultsArea').hidden=false;
  const t=config.type==='picture';
  const root=$('resultsArea');root.replaceChildren();
  const box=e('div','full-result');
- box.append(e('div','trophy',t?'🎤':'🏆'),e('h2',null,t?'Well done, speaker!':'Adventure complete!'));
- box.append(e('p',null,t?'You explored '+completed+' picture'+(completed===1?'':'s')+' and practised expressing your ideas.':'You completed '+completed+' challenge'+(completed===1?'':'s')+'.'));
- if(!t)box.append(e('strong',null,score+' / '+items.length+' correct'));
- box.append(e('p',null,'Every attempt helps you become a stronger English learner.'));
+ box.append(e('div','trophy',t?'🎤':'🏆'),e('h2',null,t?'Syabas! Kamu berani bercerita!':'Tahniah! Aktiviti selesai!'));
+ box.append(e('p',null,t?'Kamu telah melihat '+completed+' gambar dan berlatih bercerita.':'Kamu telah menjawab '+completed+' soalan.'));
+ if(!t)box.append(e('strong',null,score+' / '+items.length+' betul'));
+ box.append(e('p',null,'Teruskan berlatih. Kamu semakin pandai!'));
  const buttons=e('div','stage-actions');
- buttons.append(makeButton('🔄 Play again','btn primary',resetStudent),makeButton('🏝️ Back to the Island','btn secondary',()=>{location.href='../'}));
+ buttons.append(makeButton('🔄 Main semula','btn primary',resetStudent),makeButton('🏝️ Kembali ke pulau','btn secondary',()=>{location.href='../'}));
  box.append(buttons);root.append(box);
 }
 function shuffleDifferent(list){
@@ -160,8 +160,8 @@ function renderScramble(){
  const deck=shuffleDifferent(target.map((word,i)=>({word,id:i})));
  const selected=[];
  heading('🧩 '+config.prompt);
- const answer=e('div','drop-zone empty');answer.setAttribute('aria-label','Your sentence');
- studentRoot().append(e('div','group-label','YOUR SENTENCE'),answer,e('div','group-label','TAP THE WORDS'));
+ const answer=e('div','drop-zone empty');answer.setAttribute('aria-label','Ayat kamu');
+ studentRoot().append(e('div','group-label','AYAT KAMU'),answer,e('div','group-label','TEKAN PERKATAAN'));
  const choices=e('div','pill-row');studentRoot().append(choices);
  const display=()=>{
   answer.classList.toggle('empty',!selected.length);
@@ -169,13 +169,13 @@ function renderScramble(){
   choices.replaceChildren(...deck.filter(token=>!selected.includes(token)).map(token=>makeButton(token.word,'tile',()=>{selected.push(token);display()})));
  };
  display();
- const submit=makeButton('Check sentence ✓','btn primary',()=>{
-  if(selected.length!==target.length){feedback('Tap all the words before checking your sentence.','note');return}
+ const submit=makeButton('Semak ayat ✓','btn primary',()=>{
+  if(selected.length!==target.length){feedback('Tekan semua perkataan dahulu.','note');return}
   if(selected.map(x=>x.word).join(' ')===target.join(' ')){completeCorrect();submit.disabled=true;answer.querySelectorAll('button').forEach(b=>b.disabled=true);choices.replaceChildren()}
   else markWrong();
  });
- actions([submit,makeButton('Clear','btn secondary',()=>{selected.splice(0);display();feedback('')}),
-  makeButton('🔊 Read answer','btn secondary',()=>speaker(items[index].text))]);
+ actions([submit,makeButton('Padam','btn secondary',()=>{selected.splice(0);display();feedback('')}),
+  makeButton('🔊 Dengar ayat','btn secondary',()=>speaker(items[index].text))]);
 }
 function renderChoices(options,correct,after,extra){
  const box=e('div','options');studentRoot().append(box);
@@ -201,20 +201,20 @@ function renderCloze(){
  txt.append(document.createTextNode(left),e('span','', '_____'),document.createTextNode(right));
  studentRoot().append(txt);
  renderChoices([q.answer,...q.distractors],q.answer);
- actions([makeButton('🔊 Hear the sentence','btn secondary',()=>speaker(q.sentence.replace('___',q.answer)))]);
+ actions([makeButton('🔊 Dengar ayat','btn secondary',()=>speaker(q.sentence.replace('___',q.answer)))]);
 }
 function renderPunctuation(){
  const q=items[index];
  heading('🔎 '+config.prompt);
  const box=e('div','question-text',q.sentence.replace('___',' □ '));studentRoot().append(box);
  renderChoices(['.','?','!',','],q.mark);
- actions([makeButton('🔊 Listen to the complete sentence','btn secondary',()=>speaker(q.sentence.replace('___',q.mark)))]);
+ actions([makeButton('🔊 Dengar ayat penuh','btn secondary',()=>speaker(q.sentence.replace('___',q.mark)))]);
 }
 function renderSequence(){
  const q=items[index],ordered=q.lines;
  let tokens=shuffleDifferent(ordered.map((text,i)=>({text,id:i})));
  heading('📚 '+config.prompt);
- studentRoot().append(e('div','group-label',q.title||'Put the events in order'));
+ studentRoot().append(e('div','group-label',q.title||'Susun peristiwa mengikut urutan'));
  const container=e('div');studentRoot().append(container);
  const draw=()=>{
   container.replaceChildren();
@@ -226,11 +226,11 @@ function renderSequence(){
    container.append(row);
   });
  };draw();
- const submit=makeButton('Check the order ✓','btn primary',()=>{
+ const submit=makeButton('Semak susunan ✓','btn primary',()=>{
   if(tokens.every((token,i)=>token.id===i)){completeCorrect();submit.disabled=true}
   else markWrong();
  });
- actions([submit,makeButton('🔊 Hear the complete story','btn secondary',()=>speaker(q.lines.join(' ')))]);
+ actions([submit,makeButton('🔊 Dengar cerita','btn secondary',()=>speaker(q.lines.join(' ')))]);
 }
 function renderPairs(){
  const q=items[index],matched=new Set();
@@ -238,24 +238,24 @@ function renderPairs(){
  heading('🤝 '+config.prompt);
  studentRoot().append(e('div','group-label',q.title));
  const grid=e('div','match-grid'),leftCol=e('div','match-col'),rightCol=e('div','match-col');
- const leftCaption=e('div','match-caption','Choose a word'),rightCaption=e('div','match-caption','Choose its partner');
+ const leftCaption=e('div','match-caption','Pilih perkataan'),rightCaption=e('div','match-caption','Pilih padanan');
  leftCol.append(leftCaption);rightCol.append(rightCaption);
  const rightOrder=shuffleDifferent(q.pairs.map((_,i)=>i));
  const draw=()=>{
   while(leftCol.children.length>1)leftCol.lastElementChild.remove();
   while(rightCol.children.length>1)rightCol.lastElementChild.remove();
   q.pairs.forEach((pair,i)=>{
-   const b=makeButton(pair[0],'match-choice',()=>{chosenLeft=i;draw();feedback('Now choose the matching phrase on the right.','note')});
+   const b=makeButton(pair[0],'match-choice',()=>{chosenLeft=i;draw();feedback('Sekarang pilih padanan di sebelah kanan.','note')});
    b.disabled=matched.has(i);if(matched.has(i))b.classList.add('done');
    if(chosenLeft===i)b.classList.add('active');
    leftCol.append(b);
   });
   rightOrder.forEach(i=>{
    const b=makeButton(q.pairs[i][1],'match-choice',()=>{
-    if(chosenLeft<0){feedback('Choose a word on the left first.','note');return}
+    if(chosenLeft<0){feedback('Pilih perkataan di sebelah kiri dahulu.','note');return}
     if(chosenLeft===i){
      matched.add(i);chosenLeft=-1;
-     if(matched.size===q.pairs.length){completeCorrect()}else feedback('Great match! '+matched.size+' of '+q.pairs.length+' pairs found.','good');
+     if(matched.size===q.pairs.length){completeCorrect()}else feedback('Bagus! '+matched.size+' daripada '+q.pairs.length+' pasangan betul.','good');
      draw();
     }else markWrong();
    });
@@ -267,11 +267,11 @@ function renderPairs(){
 }
 function renderDoctor(){
  const q=items[index];heading('🩺 '+config.prompt);
- studentRoot().append(e('div','group-label','The sentence needs a little help:'));
+ studentRoot().append(e('div','group-label','Ayat ini perlu dibetulkan:'));
  const wrong=e('div','question-text sentence-strike',q.wrong);studentRoot().append(wrong);
- studentRoot().append(e('div','group-label','Choose the corrected sentence'));
+ studentRoot().append(e('div','group-label','Pilih ayat yang betul'));
  renderChoices([q.correct,...q.distractors],q.correct);
- actions([makeButton('🔊 Hear the correct sentence','btn secondary',()=>speaker(q.correct))]);
+ actions([makeButton('🔊 Dengar ayat yang betul','btn secondary',()=>speaker(q.correct))]);
 }
 function buildExpanded(q){
  const final=q.base.replace(/[.!?]\s*$/,'');
@@ -281,28 +281,28 @@ function buildExpanded(q){
 }
 function renderBuilder(){
  const q=items[index],phases=[
- {title:'WHEN did it happen?',answer:q.time,options:[q.time,...q.wrongTime]},
- {title:'WHERE did it happen?',answer:q.place,options:[q.place,...q.wrongPlace]},
- {title:'HOW did it happen?',answer:q.manner,options:[q.manner,...q.wrongManner]}
+ {title:'BILAKAH berlaku?',answer:q.time,options:[q.time,...q.wrongTime]},
+ {title:'DI MANAKAH berlaku?',answer:q.place,options:[q.place,...q.wrongPlace]},
+ {title:'BAGAIMANAKAH berlaku?',answer:q.manner,options:[q.manner,...q.wrongManner]}
  ];
  let phase=0,missed=false;
  heading('✨ '+config.prompt);
  textPanel(q.base.replace(/[.!?]\s*$/,'')+'.');
- const holder=e('div','builder-block'),summary=e('div','builder-output','Let’s make the sentence more interesting!');
+ const holder=e('div','builder-block'),summary=e('div','builder-output','Mari kembangkan ayat!');
  studentRoot().append(summary,holder);
  const showPhase=()=>{
   if(phase>=3){
    summary.textContent=buildExpanded(q);
-   holder.replaceChildren(e('h3',null,'You made the sentence richer! 🌈'));
-   if(!missed){score++;$('scoreProgress').textContent='⭐ '+score+' correct';}
-   feedback('Well done! You added time, place and manner details.','good');addNext();return;
+   holder.replaceChildren(e('h3',null,'Ayat kamu semakin lengkap! 🌈'));
+   if(!missed){score++;$('scoreProgress').textContent='⭐ '+score+' betul';}
+   feedback('Syabas! Kamu telah menambah masa, tempat dan cara.','good');addNext();return;
   }
   const part=phases[phase];
-  holder.replaceChildren(e('h3',null,(phase+1)+' of 3 — '+part.title));
+  holder.replaceChildren(e('h3',null,(phase+1)+' daripada 3 — '+part.title));
   const buttons=e('div','options');holder.append(buttons);
   shuffleDifferent(part.options).forEach(option=>{
    buttons.append(makeButton(option,'option',()=>{
-    if(option===part.answer){phase++;feedback('Excellent choice!','good');showPhase()}
+    if(option===part.answer){phase++;feedback('Bagus! Pilihan yang tepat!','good');showPhase()}
     else{missed=true;markWrong()}
    }))
   });
@@ -358,25 +358,25 @@ function renderPicture(){
  const prompts=e('ol','question-list');q.questions.forEach(x=>prompts.append(e('li',null,x)));
  studentRoot().append(prompts);
  const keywords=e('div','keyword-row');q.keywords.forEach(word=>keywords.append(e('span','keyword',word)));
- const kwToggle=makeButton('💡 Show helpful words','btn secondary',()=>{keywords.hidden=!keywords.hidden;kwToggle.textContent=keywords.hidden?'💡 Show helpful words':'Hide helpful words'});
+ const kwToggle=makeButton('💡 Lihat kata bantuan','btn secondary',()=>{keywords.hidden=!keywords.hidden;kwToggle.textContent=keywords.hidden?'💡 Lihat kata bantuan':'Sembunyikan kata bantuan'});
  keywords.hidden=true;studentRoot().append(kwToggle,keywords);
- studentRoot().append(e('div','group-label','Share your ideas'));
+ studentRoot().append(e('div','group-label','Ceritakan pendapat kamu'));
  const response=e('textarea','oral-area');
- response.setAttribute('aria-label','Type your oral response or the words recognised from your speech');
- response.placeholder='You can type here, use the microphone if supported, or speak aloud without recording.';
+ response.setAttribute('aria-label','Tulis jawapan kamu jika mahu');
+ response.placeholder='Kamu boleh menaip di sini atau bercerita dengan suara kamu.';
  studentRoot().append(response);
- const oralStatus=e('p','feedback note','If speech recognition is unavailable, you can still speak aloud and reflect.');
+ const oralStatus=e('p','feedback note','Jika mikrofon tidak tersedia, kamu masih boleh bercerita tanpa rakaman.');
  studentRoot().append(oralStatus);
  const checks=e('div','oral-checks');
- for(const [key,label] of [['looked','I described what I saw'],['details','I used complete sentences'],['kind','I explained my ideas clearly']]){
+ for(const [key,label] of [['looked','Saya menerangkan perkara yang saya lihat'],['details','Saya menggunakan ayat yang lengkap'],['kind','Saya bercerita dengan jelas']]){
   const check=e('input');check.type='checkbox';check.id='oral-'+key;const lab=e('label');lab.htmlFor=check.id;lab.append(check,document.createTextNode(label));checks.append(lab);
  }studentRoot().append(checks);
- const modelBox=e('div','builder-block');modelBox.hidden=true;modelBox.append(e('h3',null,'A possible model response'),e('p','story-text',q.model));
+ const modelBox=e('div','builder-block');modelBox.hidden=true;modelBox.append(e('h3',null,'Contoh jawapan'),e('p','story-text',q.model));
  studentRoot().append(modelBox);
- const micBtn=makeButton('🎙️ Start speaking','btn secondary',()=>{
+ const micBtn=makeButton('🎙️ Mula bercakap','btn secondary',()=>{
   const API=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!API){oralStatus.textContent='Speech recognition is not available here. Speak aloud or type your ideas instead.';return}
-  if(recognition){stopMic();micBtn.textContent='🎙️ Start speaking';oralStatus.textContent='Recording stopped.';return}
+  if(!API){oralStatus.textContent='Pengecaman suara tidak tersedia. Kamu masih boleh bercerita atau menaip.';return}
+  if(recognition){stopMic();micBtn.textContent='🎙️ Mula bercakap';oralStatus.textContent='Rakaman dihentikan.';return}
   try{
    const rec=new API();rec.lang='ms-MY';rec.continuous=true;rec.interimResults=true;
    let base=normal(response.value);if(base)base+=' ';
@@ -388,17 +388,17 @@ function renderPicture(){
     }
     response.value=(base+final+interim).trim();
    };
-   rec.onerror=()=>{oralStatus.textContent='Microphone recognition unavailable. You can still speak aloud.';recognition=null;micBtn.textContent='🎙️ Start speaking'};
-   rec.onend=()=>{recognition=null;micBtn.textContent='🎙️ Start speaking'};
+   rec.onerror=()=>{oralStatus.textContent='Mikrofon tidak tersedia. Kamu masih boleh bercerita.';recognition=null;micBtn.textContent='🎙️ Mula bercakap'};
+   rec.onend=()=>{recognition=null;micBtn.textContent='🎙️ Mula bercakap'};
    recognition=rec;rec.start();
-   micBtn.textContent='⏹ Stop speaking';oralStatus.textContent='Listening in English. Please speak clearly.';
-  }catch(err){recognition=null;oralStatus.textContent='Unable to start the microphone. Please speak aloud or type.'}
+   micBtn.textContent='⏹ Hentikan rakaman';oralStatus.textContent='Sedang mendengar Bahasa Melayu. Sila bercakap dengan jelas.';
+  }catch(err){recognition=null;oralStatus.textContent='Mikrofon tidak dapat digunakan. Sila bercerita atau menaip.'}
  });
- const finish=makeButton('I have spoken — reflect ✓','btn primary',()=>{
-  stopMic();micBtn.textContent='🎙️ Start speaking';
+ const finish=makeButton('Saya sudah bercerita ✓','btn primary',()=>{
+  stopMic();micBtn.textContent='🎙️ Mula bercakap';
   modelBox.hidden=false;
-  feedback('Well done for sharing your ideas! Compare your response with the model and think about how to improve.','good');
-  actions([makeButton('🔊 Hear the model','btn secondary',()=>speaker(q.model)),makeButton(index+1<items.length?'Next picture →':'Finish speaking adventure →','btn primary',nextQuestion)]);
+  feedback('Syabas kerana berani bercerita! Baca contoh jawapan dan cuba lagi.','good');
+  actions([makeButton('🔊 Dengar contoh','btn secondary',()=>speaker(q.model)),makeButton(index+1<items.length?'Gambar seterusnya →':'Tamatkan latihan →','btn primary',nextQuestion)]);
  });
  actions([micBtn,finish]);
 }
